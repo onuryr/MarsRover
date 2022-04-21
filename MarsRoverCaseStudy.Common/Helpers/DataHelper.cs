@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MarsRoverCaseStudy.Common.Helper
+namespace MarsRoverCaseStudy.Common.Helpers
 {
-    public interface IEntityHelper
+    public interface IDataHelper
     {
         Plateau GetPlateau(string input);
         Position GetInitialPosition(string input);
@@ -16,11 +16,11 @@ namespace MarsRoverCaseStudy.Common.Helper
         Position RunMoveCode(Rover rover, Plateau plateau);
     }
 
-    public class EntityHelper : IEntityHelper
+    public class DataHelper : IDataHelper
     {
         private readonly IStringHelper _stringHelper;
 
-        public EntityHelper(IStringHelper stringHelper)
+        public DataHelper(IStringHelper stringHelper)
         {
             _stringHelper = stringHelper;
         }

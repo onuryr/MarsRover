@@ -1,5 +1,5 @@
 ﻿using MarsRoverCaseStudy.Business.Services;
-using MarsRoverCaseStudy.Common.Helper;
+using MarsRoverCaseStudy.Common.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -11,7 +11,7 @@ namespace MarsRoverCaseStudy
         {
             var serviceProvider = new ServiceCollection()
                 .AddScoped<IBusinessService, BusinessService>()
-                .AddScoped<IEntityHelper, EntityHelper>()
+                .AddScoped<IDataHelper, DataHelper>()
                 .AddScoped<IConsoleHelper, ConsoleHelper>()
                 .AddScoped<IStringHelper, StringHelper>()
                 .BuildServiceProvider();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MarsRoverCaseStudy.Common.Helper
+namespace MarsRoverCaseStudy.Common.Helpers
 {
     public interface IStringHelper
     {

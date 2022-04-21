@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MarsRoverCaseStudy.Common.Helper
+namespace MarsRoverCaseStudy.Common.Helpers
 {
     public interface IConsoleHelper
     {

@@ -1,5 +1,5 @@
 ﻿using MarsRoverCaseStudy.Business.Common.Entities;
-using MarsRoverCaseStudy.Common.Helper;
+using MarsRoverCaseStudy.Common.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,12 +13,12 @@ namespace MarsRoverCaseStudy.Business.Services
 
     public class BusinessService : IBusinessService
     {
-        private readonly IEntityHelper _entityHelper;
+        private readonly IDataHelper _dataHelper;
         private readonly IConsoleHelper _consoleHelper;
 
-        public BusinessService(IEntityHelper entityHelper, IConsoleHelper consoleHelper)
+        public BusinessService(IDataHelper dataHelper, IConsoleHelper consoleHelper)
         {
-            _entityHelper = entityHelper;
+            _dataHelper = dataHelper;
             _consoleHelper = consoleHelper;
         }
 
@@ -28,7 +28,7 @@ namespace MarsRoverCaseStudy.Business.Services
             {
                 _consoleHelper.WriteLine("Please enter two integer values to determine the size of the plateau:");
                 string input = _consoleHelper.ReadLine();
-                Plateau plateau = _entityHelper.GetPlateau(input);
+                Plateau plateau = _dataHelper.GetPlateau(input);
 
                 List<Rover> roverList = new List<Rover>();
 
@@ -37,15 +37,15 @@ namespace MarsRoverCaseStudy.Business.Services
                     int roverId = i + 1;
                     _consoleHelper.WriteLine($"Please enter the coordinates for rover {roverId}:");
                     input = _consoleHelper.ReadLine();
-                    Position position = _entityHelper.GetInitialPosition(input);
+                    Position position = _dataHelper.GetInitialPosition(input);
 
-                    _entityHelper.ValidatePosition(position, plateau, roverId);
+                    _dataHelper.ValidatePosition(position, plateau, roverId);
 
                     _consoleHelper.WriteLine($"In order to move rover {roverId}, please enter the code:");
                     input = _consoleHelper.ReadLine();
-                    List<string> moveCodeList = _entityHelper.GetMoveCodeList(input);
+                    List<string> moveCodeList = _dataHelper.GetMoveCodeList(input);
 
-                    Rover rover = _entityHelper.GetRover(roverId, position, moveCodeList);
+                    Rover rover = _dataHelper.GetRover(roverId, position, moveCodeList);
                     roverList.Add(rover);
                 }
 
@@ -54,7 +54,7 @@ namespace MarsRoverCaseStudy.Business.Services
                 {
                     try
                     {
-                        Position finalPosition = _entityHelper.RunMoveCode(rover, plateau);
+                        Position finalPosition = _dataHelper.RunMoveCode(rover, plateau);
                         stringBuilder.AppendLine($"{finalPosition.XCoordinate} {finalPosition.YCoordinate} {finalPosition.Direction}");
                     }
                     catch (Exception ex)

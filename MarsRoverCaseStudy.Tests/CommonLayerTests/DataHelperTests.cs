@@ -1,6 +1,6 @@
 using MarsRoverCaseStudy.Business.Common.Entities;
 using MarsRoverCaseStudy.Business.Common.Entities.Enums;
-using MarsRoverCaseStudy.Common.Helper;
+using MarsRoverCaseStudy.Common.Helpers;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,15 @@ using Xunit;
 
 namespace MarsRoverCaseStudy.Tests.CommonLayerTests
 {
-    public class EntityHelperTests
+    public class DataHelperTests
     {
-        private readonly EntityHelper _sut;
+        private readonly DataHelper _sut;
         private readonly Mock<IStringHelper> _stringHelper;
 
-        public EntityHelperTests()
+        public DataHelperTests()
         {
             _stringHelper = new Mock<IStringHelper>();
-            _sut = new EntityHelper(_stringHelper.Object);
+            _sut = new DataHelper(_stringHelper.Object);
         }
 
         #region GetPlateauTests
