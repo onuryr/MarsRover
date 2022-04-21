@@ -17,29 +17,54 @@ namespace MarsRoverCaseStudy
                 .BuildServiceProvider();
 
             var businessService = serviceProvider.GetService<IBusinessService>();
-            
-            Run:
-            try
-            {
-                businessService.Run();
-            }
-            catch (Exception)
-            {
-                string input;
-                while (true)
-                {
-                    Console.WriteLine("Please type 'Y' to restart or 'N' to stop the program.");
-                    input = Console.ReadLine();
 
-                    if ((input.ToUpper() == "Y" || input.ToUpper() == "N")) 
+            while (true)
+            {
+                try
+                {
+                    businessService.Run();
+                    break;
+                }
+                catch (Exception)
+                {
+                    string input;
+
+                    while (true)
+                    {
+                        Console.WriteLine("Please type 'Y' to restart or 'N' to stop the program.");
+                        input = Console.ReadLine().ToUpper();
+                        if (input == "Y" || input == "N")
+                            break;
+                    }
+
+                    if (input == "N")
                         break;
                 }
-
-                if (input.ToUpper() == "Y")
-                {
-                    goto Run;
-                }
             }
+
+
+            //Run:
+            //try
+            //{
+            //    businessService.Run();
+            //}
+            //catch (Exception)
+            //{
+            //    string input;
+            //    while (true)
+            //    {
+            //        Console.WriteLine("Please type 'Y' to restart or 'N' to stop the program.");
+            //        input = Console.ReadLine().ToUpper();
+
+            //        if (input == "Y" || input == "N")
+            //            break;
+            //    }
+
+            //    if (input == "Y")
+            //    {
+            //        goto Run;
+            //    }
+            //}
         }
     }
 }
