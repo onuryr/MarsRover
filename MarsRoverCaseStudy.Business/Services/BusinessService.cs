@@ -15,13 +15,13 @@ namespace MarsRoverCaseStudy.Business.Services
     {
         private readonly IDataHelper _dataHelper;
         private readonly IConsoleHelper _consoleHelper;
-        private readonly IMovementHelper _roverHelper;
+        private readonly IMovementHelper _movementHelper;
 
-        public BusinessService(IDataHelper dataHelper, IConsoleHelper consoleHelper, IMovementHelper roverHelper)
+        public BusinessService(IDataHelper dataHelper, IConsoleHelper consoleHelper, IMovementHelper movementHelper)
         {
             _dataHelper = dataHelper;
             _consoleHelper = consoleHelper;
-            _roverHelper = roverHelper;
+            _movementHelper = movementHelper;
         }
 
         public void Run(int roverCount)
@@ -49,11 +49,13 @@ namespace MarsRoverCaseStudy.Business.Services
                 }
 
                 StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine(string.Empty);
+
                 foreach (var rover in roverList)
                 {
                     try
                     {
-                        Position finalPosition = _roverHelper.RunMoveCode(rover, plateau);
+                        Position finalPosition = _movementHelper.RunMoveCode(rover, plateau);
                         stringBuilder.AppendLine($"{finalPosition.XCoordinate} {finalPosition.YCoordinate} {finalPosition.Direction}");
                     }
                     catch (Exception ex)

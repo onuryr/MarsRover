@@ -14,14 +14,14 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
         private readonly BusinessService _sut;
         private readonly Mock<IDataHelper> _dataHelper;
         private readonly Mock<IConsoleHelper> _consoleHelper;
-        private readonly Mock<IMovementHelper> _roverHelper;
+        private readonly Mock<IMovementHelper> _movementHelper;
 
         public BusinessServiceTests()
         {
             _dataHelper = new Mock<IDataHelper>();
             _consoleHelper = new Mock<IConsoleHelper>();
-            _roverHelper = new Mock<IMovementHelper>();
-            _sut = new BusinessService(_dataHelper.Object, _consoleHelper.Object, _roverHelper.Object);
+            _movementHelper = new Mock<IMovementHelper>();
+            _sut = new BusinessService(_dataHelper.Object, _consoleHelper.Object, _movementHelper.Object);
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             List<Rover> roverList = new List<Rover>();
             roverList.Add(rover);
 
-            _roverHelper.Setup(e => e.RunMoveCode(rover, plateau)).Throws<Exception>();
+            _movementHelper.Setup(e => e.RunMoveCode(rover, plateau)).Throws<Exception>();
 
             _sut.Run(2);
         }
@@ -251,8 +251,8 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
                 Direction = Direction.S
             };
 
-            _roverHelper.Setup(e => e.RunMoveCode(rover1, plateau)).Returns(() => newPosition1);
-            _roverHelper.Setup(e => e.RunMoveCode(rover2, plateau)).Returns(() => newPosition2);
+            _movementHelper.Setup(e => e.RunMoveCode(rover1, plateau)).Returns(() => newPosition1);
+            _movementHelper.Setup(e => e.RunMoveCode(rover2, plateau)).Returns(() => newPosition2);
 
             string expectedPosition1 = "2 5 E";
             string actualPosition1 = $"{newPosition1.XCoordinate} {newPosition1.YCoordinate} {newPosition1.Direction}";

@@ -29,11 +29,18 @@ namespace MarsRoverCaseStudy
                     .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"))
                     .Build();
 
-                var roverCount = configuration.GetSection("RoverCount").Get<int>();
+                int roverCount = 2;
+
+                var roverCountSection = configuration.GetSection("RoverCount");
+                if (roverCountSection.Exists() && int.TryParse(roverCountSection.Value, out int roverCountTemp))
+                {
+                    roverCount = roverCountTemp;
+                }
 
                 var businessService = serviceProvider.GetService<IBusinessService>();
-
                 businessService.Run(roverCount);
+
+                Console.ReadKey(true);
             }
             catch (Exception ex)
             {
