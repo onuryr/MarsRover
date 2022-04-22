@@ -13,7 +13,6 @@ namespace MarsRoverCaseStudy.Common.Helpers
         List<string> GetMoveCodeList(string input);
         Rover GetRover(int id, Position position, List<string> moveCodeList);
         void ValidatePosition(Position position, Plateau plateau, int roverNumber);
-        Position RunMoveCode(Rover rover, Plateau plateau);
     }
 
     public class DataHelper : IDataHelper
@@ -103,6 +102,21 @@ namespace MarsRoverCaseStudy.Common.Helpers
             return moveCodeList;
         }
 
+        public Rover GetRover(int id, Position position, List<string> moveCodeList)
+        {
+            if (id <= 0)
+            {
+                throw new Exception($"Rover id must be greater than 0.");
+            }
+
+            return new Rover 
+            { 
+                Id = id, 
+                Position = position, 
+                MoveCode = moveCodeList 
+            };
+        }
+
         public void ValidatePosition(Position position, Plateau plateau, int roverNumber)
         {
             if (position.XCoordinate > plateau.XLength || position.XCoordinate < 0
@@ -112,101 +126,5 @@ namespace MarsRoverCaseStudy.Common.Helpers
             }
         }
 
-        public Rover GetRover(int id, Position position, List<string> moveCodeList)
-        {
-            if (id <= 0)
-            {
-                throw new Exception($"Rover id must be greater than 0.");
-            }
-
-            return new Rover
-            {
-                Id = id,
-                Position = position,
-                MoveCode = moveCodeList
-            };
-        }
-
-        public Position RunMoveCode(Rover rover, Plateau plateau)
-        {
-            foreach (var letter in rover.MoveCode)
-            {
-                if (Enum.TryParse(letter, out BodyRelativeDirection direction))
-                {
-                    rover.Position = Turn(direction, rover.Position);
-                }
-                else
-                {
-                    rover.Position = Move(rover.Position);
-                    ValidatePosition(rover.Position, plateau, rover.Id);
-                }
-            }
-
-            return rover.Position;
-        }
-
-        private Position Move(Position position)
-        {
-            switch (position.Direction)
-            {
-                case Direction.N:
-                    position.YCoordinate++;
-                    break;
-                case Direction.E:
-                    position.XCoordinate++;
-                    break;
-                case Direction.S:
-                    position.YCoordinate--;
-                    break;
-                case Direction.W:
-                    position.XCoordinate--;
-                    break;
-            }
-
-            return position;
-        }
-
-        private Position Turn(BodyRelativeDirection bodyRelativeDirection, Position position)
-        {
-            switch (bodyRelativeDirection)
-            {
-                case BodyRelativeDirection.L:
-                    switch (position.Direction)
-                    {
-                        case Direction.N:
-                            position.Direction = Direction.W;
-                            break;
-                        case Direction.S:
-                            position.Direction = Direction.E;
-                            break;
-                        case Direction.W:
-                            position.Direction = Direction.S;
-                            break;
-                        case Direction.E:
-                            position.Direction = Direction.N;
-                            break;
-                    }
-                    break;
-                case BodyRelativeDirection.R:
-                    switch (position.Direction)
-                    {
-                        case Direction.N:
-                            position.Direction = Direction.E;
-                            break;
-                        case Direction.S:
-                            position.Direction = Direction.W;
-                            break;
-                        case Direction.W:
-                            position.Direction = Direction.N;
-                            break;
-                        case Direction.E:
-                            position.Direction = Direction.S;
-                            break;
-                    }
-                    break;
-            }
-
-            return position;
-        }
     }
 }

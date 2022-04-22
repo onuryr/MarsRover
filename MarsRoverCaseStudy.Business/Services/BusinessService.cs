@@ -8,21 +8,23 @@ namespace MarsRoverCaseStudy.Business.Services
 {
     public interface IBusinessService
     {
-        void Run();
+        void Run(int roverCount);
     }
 
     public class BusinessService : IBusinessService
     {
         private readonly IDataHelper _dataHelper;
         private readonly IConsoleHelper _consoleHelper;
+        private readonly IMovementHelper _roverHelper;
 
-        public BusinessService(IDataHelper dataHelper, IConsoleHelper consoleHelper)
+        public BusinessService(IDataHelper dataHelper, IConsoleHelper consoleHelper, IMovementHelper roverHelper)
         {
             _dataHelper = dataHelper;
             _consoleHelper = consoleHelper;
+            _roverHelper = roverHelper;
         }
 
-        public void Run()
+        public void Run(int roverCount)
         {
             try
             {
@@ -31,7 +33,7 @@ namespace MarsRoverCaseStudy.Business.Services
 
                 List<Rover> roverList = new List<Rover>();
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < roverCount; i++)
                 {
                     int roverId = i + 1;
                     input = _consoleHelper.ReadLine();
@@ -51,7 +53,7 @@ namespace MarsRoverCaseStudy.Business.Services
                 {
                     try
                     {
-                        Position finalPosition = _dataHelper.RunMoveCode(rover, plateau);
+                        Position finalPosition = _roverHelper.RunMoveCode(rover, plateau);
                         stringBuilder.AppendLine($"{finalPosition.XCoordinate} {finalPosition.YCoordinate} {finalPosition.Direction}");
                     }
                     catch (Exception ex)

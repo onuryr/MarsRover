@@ -14,12 +14,14 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
         private readonly BusinessService _sut;
         private readonly Mock<IDataHelper> _dataHelper;
         private readonly Mock<IConsoleHelper> _consoleHelper;
+        private readonly Mock<IMovementHelper> _roverHelper;
 
         public BusinessServiceTests()
         {
             _dataHelper = new Mock<IDataHelper>();
             _consoleHelper = new Mock<IConsoleHelper>();
-            _sut = new BusinessService(_dataHelper.Object, _consoleHelper.Object);
+            _roverHelper = new Mock<IMovementHelper>();
+            _sut = new BusinessService(_dataHelper.Object, _consoleHelper.Object, _roverHelper.Object);
         }
 
         [Fact]
@@ -36,7 +38,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Throws<Exception>();
 
-            Assert.Throws<Exception>(() => _sut.Run());
+            Assert.Throws<Exception>(() => _sut.Run(2));
         }
 
         [Fact]
@@ -58,7 +60,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _dataHelper.Setup(e => e.GetInitialPosition(initialPositionInput)).Throws<Exception>();
 
-            Assert.Throws<Exception>(() => _sut.Run());
+            Assert.Throws<Exception>(() => _sut.Run(2));
         }
 
         [Fact]
@@ -124,7 +126,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _dataHelper.Setup(e => e.GetMoveCodeList(moveCodeInput)).Throws<Exception>();
 
-            Assert.Throws<Exception>(() => _sut.Run());
+            Assert.Throws<Exception>(() => _sut.Run(2));
         }
 
         [Fact]
@@ -170,9 +172,9 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             List<Rover> roverList = new List<Rover>();
             roverList.Add(rover);
 
-            _dataHelper.Setup(e => e.RunMoveCode(rover, plateau)).Throws<Exception>();
+            _roverHelper.Setup(e => e.RunMoveCode(rover, plateau)).Throws<Exception>();
 
-            _sut.Run();
+            _sut.Run(2);
         }
 
         [Fact]
@@ -249,8 +251,8 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
                 Direction = Direction.S
             };
 
-            _dataHelper.Setup(e => e.RunMoveCode(rover1, plateau)).Returns(() => newPosition1);
-            _dataHelper.Setup(e => e.RunMoveCode(rover2, plateau)).Returns(() => newPosition2);
+            _roverHelper.Setup(e => e.RunMoveCode(rover1, plateau)).Returns(() => newPosition1);
+            _roverHelper.Setup(e => e.RunMoveCode(rover2, plateau)).Returns(() => newPosition2);
 
             string expectedPosition1 = "2 5 E";
             string actualPosition1 = $"{newPosition1.XCoordinate} {newPosition1.YCoordinate} {newPosition1.Direction}";
@@ -260,7 +262,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             string actualPosition2 = $"{newPosition2.XCoordinate} {newPosition2.YCoordinate} {newPosition2.Direction}";
             Assert.Equal(expectedPosition2, actualPosition2);
 
-            _sut.Run();
+            _sut.Run(2);
         }
     }
 }

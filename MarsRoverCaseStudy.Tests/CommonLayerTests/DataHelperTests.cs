@@ -210,54 +210,5 @@ namespace MarsRoverCaseStudy.Tests.CommonLayerTests
         }
         #endregion
 
-        #region RunMoveCodeTests
-        [Fact]
-        public void RunMoveCode_PositionOutOfBoundaries_ThrowsException()
-        {
-            Rover rover = new Rover
-            {
-                Id = 1,
-                Position = new Position
-                {
-                    XCoordinate = 2,
-                    YCoordinate = 2,
-                    Direction = Direction.S
-                },
-                MoveCode = new List<string> { "M", "M", "M", "R", "R", "M", "M", "M" }
-            };
-
-            Plateau plateau = new Plateau
-            {
-                XLength = 3,
-                YLength = 3
-            };
-
-            Assert.Throws<Exception>(() => _sut.RunMoveCode(rover, plateau));
-        }
-
-        [Fact]
-        public void RunMoveCode_ValidParameters_Successful()
-        {
-            Rover rover = new Rover
-            {
-                Id = 1,
-                Position = new Position
-                {
-                    XCoordinate = 2,
-                    YCoordinate = 2,
-                    Direction = Direction.S
-                },
-                MoveCode = new List<string> { "M", "L", "L", "M", "R", "M", "R", "R", "M", "L", "R", "R", "L" }
-            };
-
-            Plateau plateau = new Plateau
-            {
-                XLength = 3,
-                YLength = 3
-            };
-
-            _sut.RunMoveCode(rover, plateau);
-        }
-        #endregion
     }
 }
