@@ -247,7 +247,7 @@ namespace MarsRoverCaseStudy.Tests.CommonLayerTests
                     YCoordinate = 2,
                     Direction = Direction.S
                 },
-                MoveCode = new List<string> { "M", "L", "L", "M", "R", "M", "R", "R", "M", "L", "R", "R", "L"}
+                MoveCode = new List<string> { "M", "L", "L", "M", "R", "M", "R", "R", "M", "L", "R", "R", "L" }
             };
 
             Plateau plateau = new Plateau
