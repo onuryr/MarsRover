@@ -1,6 +1,8 @@
 ﻿using MarsRoverCaseStudy.Business.Services;
 using MarsRoverCaseStudy.Common.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
+using NLog.Web;
 using System;
 
 namespace MarsRoverCaseStudy
@@ -9,62 +11,26 @@ namespace MarsRoverCaseStudy
     {
         static void Main(string[] args)
         {
-            var serviceProvider = new ServiceCollection()
-                .AddScoped<IBusinessService, BusinessService>()
-                .AddScoped<IDataHelper, DataHelper>()
-                .AddScoped<IConsoleHelper, ConsoleHelper>()
-                .AddScoped<IStringHelper, StringHelper>()
-                .BuildServiceProvider();
+            Logger logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
 
-            var businessService = serviceProvider.GetService<IBusinessService>();
-
-            while (true)
+            try
             {
-                try
-                {
-                    businessService.Run();
-                    break;
-                }
-                catch (Exception)
-                {
-                    string input;
+                var serviceProvider = new ServiceCollection()
+                    .AddScoped<IBusinessService, BusinessService>()
+                    .AddScoped<IDataHelper, DataHelper>()
+                    .AddScoped<IConsoleHelper, ConsoleHelper>()
+                    .AddScoped<IStringHelper, StringHelper>()
+                    .BuildServiceProvider();
 
-                    while (true)
-                    {
-                        Console.WriteLine("Please type 'Y' to restart or 'N' to stop the program.");
-                        input = Console.ReadLine().ToUpper();
-                        if (input == "Y" || input == "N")
-                            break;
-                    }
+                var businessService = serviceProvider.GetService<IBusinessService>();
 
-                    if (input == "N")
-                        break;
-                }
+                businessService.Run();
             }
-
-
-            //Run:
-            //try
-            //{
-            //    businessService.Run();
-            //}
-            //catch (Exception)
-            //{
-            //    string input;
-            //    while (true)
-            //    {
-            //        Console.WriteLine("Please type 'Y' to restart or 'N' to stop the program.");
-            //        input = Console.ReadLine().ToUpper();
-
-            //        if (input == "Y" || input == "N")
-            //            break;
-            //    }
-
-            //    if (input == "Y")
-            //    {
-            //        goto Run;
-            //    }
-            //}
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}{Environment.NewLine}Please restart the program.");
+                logger.Error(ex.Message);
+            } 
         }
     }
 }

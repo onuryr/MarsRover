@@ -26,7 +26,6 @@ namespace MarsRoverCaseStudy.Business.Services
         {
             try
             {
-                _consoleHelper.WriteLine("Please enter two integer values to determine the size of the plateau:");
                 string input = _consoleHelper.ReadLine();
                 Plateau plateau = _dataHelper.GetPlateau(input);
 
@@ -35,13 +34,11 @@ namespace MarsRoverCaseStudy.Business.Services
                 for (int i = 0; i < 2; i++)
                 {
                     int roverId = i + 1;
-                    _consoleHelper.WriteLine($"Please enter the coordinates for rover {roverId}:");
                     input = _consoleHelper.ReadLine();
                     Position position = _dataHelper.GetInitialPosition(input);
 
                     _dataHelper.ValidatePosition(position, plateau, roverId);
 
-                    _consoleHelper.WriteLine($"In order to move rover {roverId}, please enter the code:");
                     input = _consoleHelper.ReadLine();
                     List<string> moveCodeList = _dataHelper.GetMoveCodeList(input);
 
@@ -67,8 +64,7 @@ namespace MarsRoverCaseStudy.Business.Services
             }
             catch (Exception ex)
             {
-                _consoleHelper.WriteLine($"{ex.Message}");
-                throw;
+                throw ex;
             }
         }
     }
