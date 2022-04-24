@@ -122,7 +122,7 @@ namespace MarsRoverCaseStudy.Common.Helpers
             if (position.XCoordinate > plateau.XLength || position.XCoordinate < 0
                 || position.YCoordinate > plateau.YLength || position.YCoordinate < 0)
             {
-                throw new Exception($"Rover {roverNumber} is out of boundaries: {position.XCoordinate} {position.YCoordinate} {position.Direction}. Plateau: {plateau.XLength} {plateau.YLength}");
+                throw new Exception($"Rover {roverNumber} is out of boundaries at: {position.XCoordinate} {position.YCoordinate} {position.Direction}. Plateau: {plateau.XLength} {plateau.YLength}");
             }
         }
 
