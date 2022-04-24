@@ -38,37 +38,19 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Throws<Exception>();
 
-            Assert.Throws<Exception>(() => _sut.Run(2));
-        }
-
-        [Fact]
-        public void GetInitialPosition_CannotParseThirdValue_ThrowsException()
-        {
-            string plateauInput = "5 5";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => plateauInput);
-
-            Plateau plateau = new Plateau
-            {
-                XLength = 5,
-                YLength = 5
-            };
-
-            _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Returns(() => plateau);
-
-            string initialPositionInput = "2 2 Q";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => initialPositionInput);
-
-            _dataHelper.Setup(e => e.GetInitialPosition(initialPositionInput)).Throws<Exception>();
-
-            Assert.Throws<Exception>(() => _sut.Run(2));
+            Assert.Throws<Exception>(() => _sut.Run());
         }
 
         [Fact]
         public void GetInitialPosition_InvalidPosition_ThrowsException()
         {
             int roverId = 1;
-            string plateauInput = "5 5";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => plateauInput);
+            string plateauInput = "3 4";
+            string initialPositionInput = "3 6 W";
+
+            _consoleHelper.SetupSequence(t => t.ReadLine())
+                .Returns(plateauInput)
+                .Returns(initialPositionInput);
 
             Plateau plateau = new Plateau
             {
@@ -77,9 +59,6 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             };
 
             _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Returns(() => plateau);
-
-            string initialPositionInput = "3 6 W";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => initialPositionInput);
 
             Position position = new Position()
             {
@@ -91,13 +70,21 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             _dataHelper.Setup(e => e.GetInitialPosition(initialPositionInput)).Returns(() => position);
 
             _dataHelper.Setup(e => e.ValidatePosition(position, plateau, roverId)).Throws<Exception>();
+
+            Assert.Throws<Exception>(() => _sut.Run());
         }
 
         [Fact]
         public void GetMoveCodeList_InvalidInput_ThrowsException()
         {
             string plateauInput = "5 5";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => plateauInput);
+            string initialPositionInput = "3 4 W";
+            string moveCodeInput = "MMQRF LR";
+
+            _consoleHelper.SetupSequence(t => t.ReadLine())
+                .Returns(plateauInput)
+                .Returns(initialPositionInput)
+                .Returns(moveCodeInput);
 
             Plateau plateau = new Plateau
             {
@@ -106,9 +93,6 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             };
 
             _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Returns(() => plateau);
-
-            string initialPositionInput = "3 4 W";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => initialPositionInput);
 
             Position position = new Position()
             {
@@ -121,19 +105,22 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _dataHelper.Setup(e => e.ValidatePosition(position, plateau, 1));
 
-            string moveCodeInput = "MMQRF LR";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => moveCodeInput);
-
             _dataHelper.Setup(e => e.GetMoveCodeList(moveCodeInput)).Throws<Exception>();
 
-            Assert.Throws<Exception>(() => _sut.Run(2));
+            Assert.Throws<Exception>(() => _sut.Run());
         }
 
         [Fact]
         public void RunMoveCode_OutOfBoundaries_ThrowsException()
         {
             string plateauInput = "5 5";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => plateauInput);
+            string initialPositionInput = "3 4 W";
+            string moveCodeInput = "MMMMM";
+
+            _consoleHelper.SetupSequence(t => t.ReadLine())
+                .Returns(plateauInput)
+                .Returns(initialPositionInput)
+                .Returns(moveCodeInput);
 
             Plateau plateau = new Plateau
             {
@@ -142,9 +129,6 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             };
 
             _dataHelper.Setup(e => e.GetPlateau(plateauInput)).Returns(() => plateau);
-
-            string initialPositionInput = "3 4 W";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => initialPositionInput);
 
             Position position = new Position()
             {
@@ -156,9 +140,6 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             _dataHelper.Setup(e => e.GetInitialPosition(initialPositionInput)).Returns(() => position);
 
             _dataHelper.Setup(e => e.ValidatePosition(position, plateau, 1));
-
-            string moveCodeInput = "MMMMM";
-            _consoleHelper.Setup(c => c.ReadLine()).Returns(() => moveCodeInput);
 
             List<string> moveCodeList = new List<string> { "M", "M", "M", "M", "M" };
 
@@ -174,7 +155,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
 
             _movementHelper.Setup(e => e.RunMoveCode(rover, plateau)).Throws<Exception>();
 
-            _sut.Run(2);
+            _sut.Run();
         }
 
         [Fact]
@@ -185,13 +166,15 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             string moveCodeInput1 = "MRMR";
             string initialPositionInput2 = "1 2 N";
             string moveCodeInput2 = "MRR";
+            string emptyInput = null;
 
             _consoleHelper.SetupSequence(t => t.ReadLine())
                 .Returns(plateauInput)
                 .Returns(initialPositionInput1)
                 .Returns(moveCodeInput1)
                 .Returns(initialPositionInput2)
-                .Returns(moveCodeInput2);
+                .Returns(moveCodeInput2)
+                .Returns(emptyInput);
 
             Plateau plateau = new Plateau
             {
@@ -262,7 +245,7 @@ namespace MarsRoverCaseStudy.Tests.BusinessLayerTests
             string actualPosition2 = $"{newPosition2.XCoordinate} {newPosition2.YCoordinate} {newPosition2.Direction}";
             Assert.Equal(expectedPosition2, actualPosition2);
 
-            _sut.Run(2);
+            _sut.Run();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MarsRoverCaseStudy.Business.Services
 {
     public interface IBusinessService
     {
-        void Run(int roverCount);
+        void Run();
     }
 
     public class BusinessService : IBusinessService
@@ -24,28 +24,35 @@ namespace MarsRoverCaseStudy.Business.Services
             _movementHelper = movementHelper;
         }
 
-        public void Run(int roverCount)
+        public void Run()
         {
             try
             {
                 string input = _consoleHelper.ReadLine();
                 Plateau plateau = _dataHelper.GetPlateau(input);
 
+                int count = 0;
+                int roverId = 1;
+                Position position = null;
                 List<Rover> roverList = new List<Rover>();
 
-                for (int i = 0; i < roverCount; i++)
+                while (!string.IsNullOrEmpty(input = _consoleHelper.ReadLine()))
                 {
-                    int roverId = i + 1;
-                    input = _consoleHelper.ReadLine();
-                    Position position = _dataHelper.GetInitialPosition(input);
+                    count++;
+                    if (count % 2 == 1)
+                    {
+                        position = _dataHelper.GetInitialPosition(input);
 
-                    _dataHelper.ValidatePosition(position, plateau, roverId);
+                        _dataHelper.ValidatePosition(position, plateau, roverId);
+                    }
+                    else
+                    {
+                        List<string> moveCodeList = _dataHelper.GetMoveCodeList(input);
 
-                    input = _consoleHelper.ReadLine();
-                    List<string> moveCodeList = _dataHelper.GetMoveCodeList(input);
-
-                    Rover rover = _dataHelper.GetRover(roverId, position, moveCodeList);
-                    roverList.Add(rover);
+                        Rover rover = _dataHelper.GetRover(roverId, position, moveCodeList);
+                        roverList.Add(rover);
+                        roverId++;
+                    }
                 }
 
                 StringBuilder stringBuilder = new StringBuilder();

@@ -1,11 +1,9 @@
 ﻿using MarsRoverCaseStudy.Business.Services;
 using MarsRoverCaseStudy.Common.Helpers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using NLog.Web;
 using System;
-using System.IO;
 
 namespace MarsRoverCaseStudy
 {
@@ -25,22 +23,8 @@ namespace MarsRoverCaseStudy
                     .AddScoped<IMovementHelper, MovementHelper>()
                     .BuildServiceProvider();
 
-                var configuration = new ConfigurationBuilder()
-                    .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"))
-                    .Build();
-
-                int roverCount = 2;
-
-                var roverCountSection = configuration.GetSection("RoverCount");
-                if (roverCountSection.Exists() && int.TryParse(roverCountSection.Value, out int roverCountTemp))
-                {
-                    roverCount = roverCountTemp;
-                }
-
                 var businessService = serviceProvider.GetService<IBusinessService>();
-                businessService.Run(roverCount);
-
-                Console.ReadKey(true);
+                businessService.Run();
             }
             catch (Exception ex)
             {
